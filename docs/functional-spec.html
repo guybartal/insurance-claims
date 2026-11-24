@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
-<meta name="commentable-html-validated-hash" content="80ywa4" />
-<meta name="commentable-html-validated" content="2026-11-24T15:27:13Z" />
+<meta name="commentable-html-validated-hash" content="yii2ng" />
+<meta name="commentable-html-validated" content="2026-11-24T15:44:05Z" />
 <meta name="commentable-html-agent" content="copilot" />
 <meta name="commentable-html-session-id" content="40ad9b44-e1fc-4f47-8b20-5a44541425d8" />
 <meta name="commentable-html-created" content="2026-11-24T15:27:06Z" />
@@ -100,10 +100,10 @@ html.cmh-awaiting-style body { visibility: hidden; }
 </style>
 
 <h1 id="title">מסמך אפיון פונקציונלי - סוכן חכם לניהול פוליסות ביטוח בריאות והגשת תביעות</h1>
-<div class="cmh-doc-stats cm-skip" data-cmh-doc-stats="1" role="note" aria-label="Document overview: 17 sections, 3,519 words, about 18 min read">
+<div class="cmh-doc-stats cm-skip" data-cmh-doc-stats="1" role="note" aria-label="Document overview: 17 sections, 4,000 words, about 20 min read">
 <span class="cmh-doc-stat"><strong>17</strong> sections</span>
-<span class="cmh-doc-stat"><strong>3,519</strong> words</span>
-<span class="cmh-doc-stat">~<strong>18</strong> min read</span>
+<span class="cmh-doc-stat"><strong>4,000</strong> words</span>
+<span class="cmh-doc-stat">~<strong>20</strong> min read</span>
 </div>
 <nav class="cm-toc" aria-label="Table of contents">
   <div class="cm-toc-title">Contents</div>
@@ -125,6 +125,7 @@ html.cmh-awaiting-style body { visibility: hidden; }
     <li class="is-sub"><span class="cm-toc-num cm-skip">6.9 </span><a href="#fr-prv">פרטיות, הסכמה ושליטה בנתונים (PRV)</a></li>
     <li class="is-sub"><span class="cm-toc-num cm-skip">6.10 </span><a href="#fr-aud">יומן ביקורת (AUD)</a></li>
     <li class="is-sub"><span class="cm-toc-num cm-skip">6.11 </span><a href="#fr-admin">ניהול תבניות מבטחים (ADM)</a></li>
+    <li class="is-sub"><span class="cm-toc-num cm-skip">6.12 </span><a href="#fr-doc">ספריית מטפלים ומסמכים חוזרים (DOC)</a></li>
     <li><span class="cm-toc-num cm-skip">7 </span><a href="#flows">תהליכים מרכזיים</a></li>
     <li class="is-sub"><span class="cm-toc-num cm-skip">7.1 </span><a href="#flow-policy">קליטת פוליסה</a></li>
     <li class="is-sub"><span class="cm-toc-num cm-skip">7.2 </span><a href="#flow-claim">הכנת תביעה מחשבונית</a></li>
@@ -133,6 +134,7 @@ html.cmh-awaiting-style body { visibility: hidden; }
     <li class="is-sub"><span class="cm-toc-num cm-skip">8.1 </span><a href="#data-policy">פוליסה</a></li>
     <li class="is-sub"><span class="cm-toc-num cm-skip">8.2 </span><a href="#data-invoice">חשבונית / קבלה</a></li>
     <li class="is-sub"><span class="cm-toc-num cm-skip">8.3 </span><a href="#data-claim">תביעה</a></li>
+    <li class="is-sub"><span class="cm-toc-num cm-skip">8.4 </span><a href="#data-provider">מטפל ומסמך חוזר</a></li>
     <li><span class="cm-toc-num cm-skip">9 </span><a href="#confirm-screen">מסך אישור "מה נקלט ומה זוהה"</a></li>
     <li><span class="cm-toc-num cm-skip">10 </span><a href="#conversations">דוגמאות שיחה</a></li>
     <li class="is-sub"><span class="cm-toc-num cm-skip">10.1 </span><a href="#conv-qa">שאלת כיסוי</a></li>
@@ -210,6 +212,7 @@ html.cmh-awaiting-style body { visibility: hidden; }
 <tr><td>התחייבות</td><td>אישור מראש של המבטח לתשלום ישיר לספק (למשל לניתוח עתידי).</td></tr>
 <tr><td>חבילת תביעה</td><td>תוצר המערכת: טופס תביעה ממולא, מסמכים מצורפים מסודרים, וסיכום עם הנחיות הגשה.</td></tr>
 <tr><td>ניצול</td><td>סכומים/טיפולים שכבר נוצלו מתוך מכסה (למשל 12 טיפולי רפואה משלימה בשנה).</td></tr>
+<tr><td>מסמך חוזר</td><td>מסמך שאינו תלוי בתביעה מסוימת (למשל הסמכה או רישיון של מטפל). נשמר בספרייה ומשמש בתביעות נוספות כל עוד הוא בתוקף.</td></tr>
 </tbody>
 </table>
 </section>
@@ -223,6 +226,8 @@ flowchart LR
   C --> E["קליטת חשבוניות"]
   E --> F["הכנת תביעה"]
   D -.-> F
+  K["ספריית מטפלים ומסמכים חוזרים"] -.-> F
+  F -.-> K
   F --> G["חבילת תביעה"]
   G --> H["מעקב תביעות"]
   H --> I["תזכורות"]
@@ -312,7 +317,7 @@ flowchart LR
 <tbody>
 <tr><td>FR-CLM-01</td><td><strong>התאמה לכיסוי:</strong> לכל חשבונית הסוכן מזהה את הכיסוי/ים המתאימים בפוליסות של הפרופיל, ומציג נימוק וציטוט. אם יש כמה התאמות - מציג אפשרויות ומדרג.</td><td>M</td></tr>
 <tr><td>FR-CLM-02</td><td><strong>בדיקת זכאות והערכת החזר:</strong> תוקף פוליסה בתאריך הטיפול, תקופת אכשרה, תקרות, מכסות שנוצלו, השתתפות עצמית - וחישוב סכום החזר צפוי עם פירוט החישוב. מוצג כ"הערכה".</td><td>M</td></tr>
-<tr><td>FR-CLM-03</td><td><strong>זיהוי חוסרים:</strong> שדות חסרים (למשל מספר רישיון מטפל, אבחנה) ומסמכים חסרים (הפניה, סיכום ביקור, כרטיס טיפולים) לפי דרישות הכיסוי והמבטח.</td><td>M</td></tr>
+<tr><td>FR-CLM-03</td><td><strong>זיהוי חוסרים:</strong> שדות חסרים (למשל מספר רישיון מטפל, אבחנה) ומסמכים חסרים (הפניה, סיכום ביקור, כרטיס טיפולים) לפי דרישות הכיסוי והמבטח. לפני שהסוכן מבקש מסמך, הוא בודק אם המסמך כבר קיים בספריית המטפלים והמסמכים (<a href="#fr-doc">6.12</a>).</td><td>M</td></tr>
 <tr><td>FR-CLM-04</td><td><strong>בקשת השלמות בשיחה:</strong> הסוכן שואל שאלה אחת ממוקדת בכל פעם (או טופס קצר), מסביר למה זה נדרש, ומאפשר להעלות מסמך חסר או לדלג ("אשלים אחר כך") - התביעה נשמרת כטיוטה.</td><td>M</td></tr>
 <tr><td>FR-CLM-05</td><td><strong>מסך אישור "מה נקלט ומה זוהה":</strong> לפני הפקה מוצג סיכום מלא - פרופיל, פוליסה וכיסוי, שדות שחולצו (עם סימון שדות בביטחון נמוך / שהושלמו ידנית), מסמכים מצורפים, הערכת החזר ונימוק. המשתמש מאשר או מתקן כל שדה. ראו <a href="#confirm-screen">סעיף 9</a>.</td><td>M</td></tr>
 <tr><td>FR-CLM-06</td><td><strong>הפקת חבילת תביעה:</strong> טופס התביעה הייעודי של המבטח (מתבנית מנוהלת) ממולא; בהיעדר תבנית - טופס גנרי מובנה. בנוסף: קובץ PDF מאוחד של הנספחים בסדר הגיוני, ודף סיכום.</td><td>M</td></tr>
@@ -332,6 +337,7 @@ flowchart LR
 <tr><td>FR-TRK-02</td><td>עדכון סטטוס ידני על ידי המשתמש (כולל תאריך הגשה, מספר תביעה אצל המבטח, סכום שאושר ושולם, מכתב תשובה).</td><td>M</td></tr>
 <tr><td>FR-TRK-03</td><td>עדכון ניצול מכסות לפי סכומים ששולמו בפועל (משמש לבדיקת זכאות עתידית).</td><td>M</td></tr>
 <tr><td>FR-TRK-04</td><td>היסטוריה ודשבורד: תביעות לפי פרופיל / פוליסה / סטטוס, סך שנתבע מול סך שהתקבל.</td><td>M</td></tr>
+<tr><td>FR-TRK-06</td><td>אם המבטח ביקש מסמכים נוספים, המשתמש מעדכן את הסטטוס "נדרשו מסמכים" ומציין מה התבקש (או מעלה את מכתב הדרישה והסוכן מחלץ את הרשימה). הסוכן בודק קודם בספריית המטפלים והמסמכים (<a href="#fr-doc">6.12</a>), ומבקש מהמשתמש רק את מה שחסר. מסמכים תלויי מטפל או פרופיל שהמשתמש מעלה נשמרים גם בספרייה.</td><td>M</td></tr>
 <tr><td>FR-TRK-05</td><td>במקרה דחייה: הסוכן מסביר את מכתב הדחייה מול סעיפי הפוליסה ומציע צעדים (השלמת מסמך, ערעור).</td><td>C</td></tr>
 </tbody>
 </table>
@@ -378,6 +384,22 @@ flowchart LR
 <tr><td>FR-ADM-01</td><td>מנהל מערכת מגדיר תבנית טופס תביעה לכל מבטח וסוג תביעה (אמבולטורי, תרופות, ניתוח, מחלה קשה), כולל מיפוי שדות.</td><td>M</td></tr>
 <tr><td>FR-ADM-02</td><td>קטלוג מבטחים: שם, ערוצי הגשה ברירת מחדל, מסמכים נדרשים לפי סוג תביעה. נוהל שחולץ מהפוליסה גובר על ברירת המחדל.</td><td>S</td></tr>
 <tr><td>FR-ADM-03</td><td>למנהל אין גישה לנתונים אישיים של משתמשים.</td><td>M</td></tr>
+</tbody>
+</table>
+
+<h3 id="fr-doc">6.12 ספריית מטפלים ומסמכים חוזרים (DOC)</h3>
+<p>מסמכים שאינם קשורים לתביעה מסוימת ונדרשים שוב ושוב - בעיקר הסמכה או רישיון של מטפל - נשמרים פעם אחת ומשמשים גם בתביעות הבאות.</p>
+<table>
+<thead><tr><th>מזהה</th><th>דרישה</th><th>עדיפות</th></tr></thead>
+<tbody>
+<tr><td>FR-DOC-01</td><td><strong>ספריית מטפלים בחשבון:</strong> המערכת מנהלת רשימת נותני שירות שהמשתמש קיבל מהם טיפול. לכל מטפל נשמרים שם, תואר, מספר עוסק / ח.פ., מספר רישיון, תחום התמחות, האם הוא בהסדר ועם איזה מבטח, ופרטי קשר. המטפל מזוהה לפי מספר עוסק או רישיון, ואם אין כאלה - לפי שם וכתובת, ונוצר אוטומטית מהחשבונית הראשונה שלו.</td><td>M</td></tr>
+<tr><td>FR-DOC-02</td><td><strong>שמירת הסמכה לשימוש חוזר:</strong> אם המבטח ביקש במסגרת תביעה הסמכה או רישיון של המטפל (או שהסוכן זיהה שהכיסוי דורש זאת), והמשתמש העלה את המסמך, הוא נשמר בספרייה תחת המטפל ולא רק בתוך התביעה.</td><td>M</td></tr>
+<tr><td>FR-DOC-03</td><td><strong>צירוף אוטומטי בתביעות הבאות:</strong> בתביעה חדשה מול אותו מטפל, אם הכיסוי או המבטח דורשים הסמכה, הסוכן מצרף את המסמך השמור לחבילה ולא מבקש אותו שוב. המסמך המצורף ומקורו ("מתוך ספריית המטפלים, נשמר בתאריך X") מוצגים במסך האישור, והמשתמש יכול להסיר או להחליף אותו.</td><td>M</td></tr>
+<tr><td>FR-DOC-04</td><td><strong>חילוץ ותוקף:</strong> מההסמכה מחולצים סוג המסמך, שם המטפל, מספר רישיון, תחום, גוף מנפיק ותאריך תוקף (אם קיים). המשתמש מאשר את הנתונים. מסמך שפג תוקפו בתאריך הטיפול לא יצורף אוטומטית, והסוכן יבקש מסמך עדכני.</td><td>M</td></tr>
+<tr><td>FR-DOC-05</td><td><strong>מסמכים חוזרים נוספים:</strong> אותו מנגנון חל על מסמכים נוספים שאינם תלויי תביעה. ברמת מטפל: אישור הסדר ופרטי בנק של ספק. ברמת פרופיל: הפניה שתקפה לסדרת טיפולים, אישור אבחנה קבועה, ואישור שני ההורים לקטין. ברמת מבוטח: צילום ת.ז. ואישור ניהול חשבון בנק.</td><td>S</td></tr>
+<tr><td>FR-DOC-06</td><td><strong>ניהול הספרייה:</strong> המשתמש יכול לצפות במטפלים ובמסמכים, להעלות מסמך מראש, להחליף גרסה (הישנה נשמרת בהיסטוריה), למחוק, ולראות באילו תביעות נעשה שימוש בכל מסמך.</td><td>M</td></tr>
+<tr><td>FR-DOC-07</td><td><strong>הפרדה:</strong> הספרייה שייכת לחשבון בלבד. מסמך שהעלה משתמש אחד לא ישמש בשום מצב משתמש אחר, גם אם מדובר באותו מטפל.</td><td>M</td></tr>
+<tr><td>FR-DOC-08</td><td>תזכורת לפני פקיעת מסמך שמור שנעשה בו שימוש לאחרונה (למשל 30 יום לפני תאריך התוקף).</td><td>C</td></tr>
 </tbody>
 </table>
 </section>
@@ -464,6 +486,15 @@ sequenceDiagram
 
 <h3 id="data-claim">8.3 תביעה</h3>
 <p>פרופיל, פוליסה, כיסוי, חשבוניות משויכות, מסמכים נלווים, סכום נתבע, הערכת החזר ופירוט חישוב, פרטי בנק, סטטוס, תאריכים, מספר תביעה אצל המבטח, סכום שאושר ושולם, ומקור לכל שדה (אוטומטי / ידני / שיחה).</p>
+
+<h3 id="data-provider">8.4 מטפל ומסמך חוזר</h3>
+<table>
+<thead><tr><th>ישות</th><th>שדות</th></tr></thead>
+<tbody>
+<tr><td>מטפל</td><td>שם, תואר, מספר עוסק / ח.פ., מספר רישיון, תחום התמחות, בהסדר (כן / לא / לא ידוע, ועם איזה מבטח), כתובת, טלפון, תביעות קשורות.</td></tr>
+<tr><td>מסמך חוזר</td><td>סוג (הסמכה / רישיון / אישור הסדר / הפניה מתמשכת / אחר), שיוך (מטפל / פרופיל / חשבון), קובץ מקורי, שדות שחולצו, גוף מנפיק, תאריך הנפקה ותוקף, גרסה, סטטוס (בתוקף / פג / הוחלף), מקור (התבקש בתביעה X / הועלה יזומה), תביעות שבהן נעשה שימוש.</td></tr>
+</tbody>
+</table>
 </section>
 <section aria-labelledby="confirm-screen">
 <h2 id="confirm-screen">9. מסך אישור "מה נקלט ומה זוהה"</h2>
@@ -530,6 +561,7 @@ sequenceDiagram
 <tr><td>BR-09</td><td>כיסוי מסוג כתב שירות - הפניה לספק, לא תביעת החזר.</td></tr>
 <tr><td>BR-10</td><td>אין ייעוץ רפואי ואין המלצה על טיפול.</td></tr>
 <tr><td>BR-11</td><td>חלוקת סדר תביעה בין שב"ן לפרטי - ההמלצה מבוססת על תנאי הפוליסות (למשל "כיסוי מהשקל הראשון" מול כיסוי משלים).</td></tr>
+<tr><td>BR-12</td><td>מסמך חוזר שמור (כמו הסמכת מטפל) יצורף אוטומטית לתביעה רק אם הוא בתוקף בתאריך הטיפול ושייך לאותו מטפל. הצירוף מוצג במסך האישור, והמשתמש יכול לבטל אותו.</td></tr>
 </tbody>
 </table>
 </section>
