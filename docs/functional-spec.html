@@ -2,7 +2,7 @@
 <html lang="en" data-theme="light">
 <head>
 <meta name="commentable-html-validated-hash" content="yii2ng" />
-<meta name="commentable-html-validated" content="2026-11-24T15:44:05Z" />
+<meta name="commentable-html-validated" content="2026-11-24T15:49:24Z" />
 <meta name="commentable-html-agent" content="copilot" />
 <meta name="commentable-html-session-id" content="40ad9b44-e1fc-4f47-8b20-5a44541425d8" />
 <meta name="commentable-html-created" content="2026-11-24T15:27:06Z" />
@@ -423,14 +423,27 @@ flowchart LR
 sequenceDiagram
   actor U as משתמש
   participant A as סוכן
+  participant L as ספריית מטפלים ומסמכים
   U->>A: מעלה חשבונית (צילום או PDF)
   A->>A: בדיקת איכות, סיווג וחילוץ שדות
   A->>U: עבור מי הטיפול? (אם לא זוהה)
   U->>A: הבת שלי, נועה
   A->>A: התאמה לכיסוי, בדיקת זכאות, זיהוי חוסרים
+  Note over A: הכיסוי דורש הסמכת מטפל והפניה מרופא
+  A->>L: חיפוש מטפל לפי מספר עוסק או רישיון
+  L-->>A: נמצא מטפל עם הסמכה שמורה ותאריך תוקף
+  alt הסמכה בתוקף בתאריך הטיפול
+    A->>A: מצרף את ההסמכה השמורה - לא מבקש שוב
+  else לא נמצאה או שפג תוקפה
+    A->>U: חסרה הסמכת המטפל - אפשר להעלות?
+    U->>A: מעלה הסמכה
+    A->>L: שמירת ההסמכה תחת המטפל לשימוש עתידי
+  end
+  A->>L: חיפוש הפניה מתמשכת בפרופיל של נועה
+  L-->>A: לא נמצאה
   A->>U: חסרה הפניה מרופא - יש לך?
   U->>A: מעלה הפניה
-  A->>U: מסך אישור - מה נקלט, מה זוהה, הערכת החזר
+  A->>U: מסך אישור - מה נקלט, מה זוהה, מסמכים מהספרייה, הערכת החזר
   U->>A: מתקן שדה ומאשר
   A->>U: חבילת תביעה + הנחיות הגשה
   U->>A: הגשתי (מעדכן סטטוס)
